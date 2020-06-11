@@ -1,47 +1,113 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 
-const DirectoryTable = (props) => (
-  <table>
-    <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Job Title</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.users.length > 0 ? (
-        props.users.map((user) => (
-          <tr key={user.id}>
-            <td>{user.first_name}</td>
-            <td>{user.last_name}</td>
-            <td>{user.title}</td>
-            <td>
-              <button
-                onClick={() => {
-                  props.editUser(user);
-                }}
-                className="button"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => props.deleteUser(user.id)}
-                className="button"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))
-      ) : (
+const useSortableData = (users, config = null) => {
+  const [sortConfig, setSortConfig] = useState(config);
+
+  const sortedUsers = useMemo(() => {
+    let sortableUsers = [...users];
+    if (sortConfig !== null) {
+      sortableUsers.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableUsers;
+  }, [users, sortConfig]);
+
+  const requestSort = (key) => {
+    let direction = "ascending";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  return { users: sortedUsers, requestSort, sortConfig };
+};
+
+const DirectoryTable = (props) => {
+  const { users, requestSort, sortConfig } = useSortableData(props.users);
+  const { editUser, deleteUser } = props;
+  const getClassNamesFor = (name) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
+
+  return (
+    <table>
+      <thead>
         <tr>
-          <td colSpan={3}>No Data</td>
+          <th>
+            <button
+              type="button"
+              onClick={() => requestSort("first_name")}
+              className={getClassNamesFor("first_name")}
+            >
+              First Name
+            </button>
+          </th>
+          <th>
+            <button
+              type="button"
+              onClick={() => requestSort("last_name")}
+              className={getClassNamesFor("last_name")}
+            >
+              Last Name
+            </button>
+          </th>
+          <th>
+            <button
+              type="button"
+              onClick={() => requestSort("title")}
+              className={getClassNamesFor("title")}
+            >
+              Job Title
+            </button>
+          </th>
+          <th></th>
         </tr>
-      )}
-    </tbody>
-  </table>
-);
+      </thead>
+      <tbody>
+        {users.length > 0 ? (
+          users.map((user) => (
+            <tr key={user.id}>
+              <td>{user.first_name}</td>
+              <td>{user.last_name}</td>
+              <td>{user.title}</td>
+              <td>
+                <button
+                  onClick={() => {
+                    editUser(user);
+                  }}
+                  className="button"
+                >
+                  Edit
+                </button>
+                <button onClick={() => deleteUser(user.id)} className="button">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={3}>No Data</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+  );
+};
 
 export default DirectoryTable;
