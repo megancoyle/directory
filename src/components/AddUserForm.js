@@ -31,6 +31,8 @@ const AddUserForm = (props) => {
         name="first_name"
         value={user.first_name}
         onChange={handleInputChange}
+        pattern="[a-zA-Z]+"
+        required
       />
       <label>Last Name</label>
       <input
@@ -38,6 +40,8 @@ const AddUserForm = (props) => {
         name="last_name"
         value={user.last_name}
         onChange={handleInputChange}
+        pattern="[a-zA-Z]+"
+        required
       />
       <label>Title</label>
       <input
@@ -45,6 +49,8 @@ const AddUserForm = (props) => {
         name="title"
         value={user.title}
         onChange={handleInputChange}
+        pattern="[a-zA-Z]+"
+        required
       />
       <button>Add</button>
     </form>

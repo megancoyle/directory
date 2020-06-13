@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import SearchBox from "./SearchBox";
 
 const useSortableData = (users, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -37,6 +38,7 @@ const useSortableData = (users, config = null) => {
 const DirectoryTable = (props) => {
   const { users, requestSort, sortConfig } = useSortableData(props.users);
   const { editUser, deleteUser } = props;
+  const [searchValue, setSearchValue] = useState("");
   const getClassNamesFor = (name) => {
     if (!sortConfig) {
       return;
@@ -44,7 +46,19 @@ const DirectoryTable = (props) => {
     return sortConfig.key === name ? sortConfig.direction : undefined;
   };
 
+  const searchHandler = (value) => {
+    setSearchValue(value) 
+  }
+
+  let updateUsers = users.filter((user) => {
+  return Object.keys(user).some(key =>
+    user[key].toString().toLowerCase().includes(searchValue.toString().toLowerCase())
+  )
+})
+
   return (
+    <>
+    <SearchBox searchHandler={searchHandler}/>
     <table>
       <thead>
         <tr>
@@ -80,7 +94,7 @@ const DirectoryTable = (props) => {
       </thead>
       <tbody>
         {users.length > 0 ? (
-          users.map((user) => (
+          updateUsers.map((user) => (
             <tr key={user.id}>
               <td>{user.first_name}</td>
               <td>{user.last_name}</td>
@@ -107,6 +121,7 @@ const DirectoryTable = (props) => {
         )}
       </tbody>
     </table>
+    </>
   );
 };
 
