@@ -20,6 +20,7 @@ const EditUserForm = (props) => {
         props.updateUser(user.id, user);
       }}
     >
+      <h2>Edit User</h2>
       <label>First Name</label>
       <input
         type="text"
@@ -42,12 +43,6 @@ const EditUserForm = (props) => {
         onChange={handleInputChange}
       />
       <button>Update user</button>
-      <button
-        onClick={() => props.setEditing(false)}
-        className="button muted-button"
-      >
-        Cancel
-      </button>
     </form>
   );
 };

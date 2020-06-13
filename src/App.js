@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DirectoryTable from "./components/DirectoryTable";
 import AddUserForm from "./components/AddUserForm";
 import EditUserForm from "./components/EditUserForm";
 import Pagination from "./components/Pagination";
+import Modal from "./components/Modal";
+import useModal from "./hooks/useModal";
 
 const dummyData = [
   { id: 1, first_name: "Ann", last_name: "Smith", title: "Dev" },
@@ -32,6 +34,7 @@ const App = () => {
   // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
+  const { isShowing, toggle } = useModal();
 
   // incrementing ids manually since this uses hardcoded dummy data
   // TODO: update this when tying it to an API/database
@@ -42,6 +45,7 @@ const App = () => {
 
   const editUser = (user) => {
     setEditing(true);
+    toggle();
     setCurrentUser({
       id: user.id,
       first_name: user.first_name,
@@ -52,8 +56,8 @@ const App = () => {
 
   const updateUser = (id, updatedUser) => {
     setEditing(false);
-
     setUsers(users.map((user) => (user.id === id ? updatedUser : user)));
+    toggle();
   };
 
   const deleteUser = (id) => {
@@ -70,20 +74,20 @@ const App = () => {
   return (
     <div className="container">
       <h1>Employee Directory</h1>
-      {editing ? (
-        <>
-          <h2>Edit user</h2>
+      <Modal
+        isShowing={isShowing}
+        hide={toggle}
+        content={
           <EditUserForm
             setEditing={setEditing}
             currentUser={currentUser}
             updateUser={updateUser}
           />
-        </>
-      ) : (
-        <>
-          <AddUserForm addUser={addUser} />
-        </>
-      )}
+        }
+      />
+      <>
+        <AddUserForm addUser={addUser} />
+      </>
       <DirectoryTable
         users={currentUsers}
         editUser={editUser}
