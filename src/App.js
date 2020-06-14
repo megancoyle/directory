@@ -1,46 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DirectoryTable from "./components/DirectoryTable";
 import AddUserForm from "./components/AddUserForm";
 import EditUserForm from "./components/EditUserForm";
 import Pagination from "./components/Pagination";
 import Modal from "./components/Modal";
 import useModal from "./hooks/useModal";
-
-const dummyData = [
-  { id: 1, first_name: "Ann", last_name: "Smith", title: "Dev" },
-  { id: 2, first_name: "Shawn", last_name: "Williams", title: "Analyst" },
-  { id: 3, first_name: "Sarah", last_name: "Jones", title: "Teller" },
-  { id: 4, first_name: "Ann", last_name: "Smith", title: "Dev" },
-  { id: 5, first_name: "Shawn", last_name: "Williams", title: "Analyst" },
-  { id: 6, first_name: "Sarah", last_name: "Jones", title: "Teller" },
-  { id: 7, first_name: "Ann", last_name: "Smith", title: "Dev" },
-  { id: 8, first_name: "Shawn", last_name: "Williams", title: "Analyst" },
-  { id: 9, first_name: "Sarah", last_name: "Jones", title: "Teller" },
-  { id: 10, first_name: "Ann", last_name: "Smith", title: "Dev" },
-  { id: 11, first_name: "Shawn", last_name: "Williams", title: "Analyst" },
-  { id: 12, first_name: "Sarah", last_name: "Jones", title: "Teller" },
-];
+import axios from "axios";
 
 const App = () => {
-  const [users, setUsers] = useState(dummyData);
+  const [users, setUsers] = useState([]);
   const [editing, setEditing] = useState(false);
   const initialFormState = {
     id: null,
     first_name: "",
     last_name: "",
-    title: "",
+    username: "",
+    email: "",
+    image: "",
   };
   const [currentUser, setCurrentUser] = useState(initialFormState);
-  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
   const { isShowing, toggle } = useModal();
 
-  // incrementing ids manually since this uses hardcoded dummy data
-  // TODO: update this when tying it to an API/database
+  useEffect(() => {
+    axios("https://randomuser.me/api/?results=50&nat=us")
+      .then((response) =>
+        response.data.results.map((user) => ({
+          id: user.id.value,
+          first_name: user.name.first,
+          last_name: user.name.last,
+          username: user.login.username,
+          email: user.email,
+          image: user.picture.thumbnail,
+        }))
+      )
+      .then((data) => {
+        setUsers(data);
+      });
+  }, []);
+
+  // incrementing ids + adding placeholder image manually
+  // TODO: update id and image handling when tying this to a database
   const addUser = (user) => {
     user.id = users.length + 1;
-    setUsers([...users, user]);
+    user.image = "https://randomuser.me/api/portraits/thumb/lego/1.jpg";
+    setUsers([user, ...users]);
   };
 
   const editUser = (user) => {
@@ -50,7 +55,9 @@ const App = () => {
       id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,
-      title: user.title,
+      username: user.username,
+      email: user.email,
+      image: user.image,
     });
   };
 

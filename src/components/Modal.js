@@ -25,7 +25,7 @@ const Modal = ({ isShowing, hide, content }) =>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <p>{content}</p>
+              {content}
             </div>
           </div>
         </>,
