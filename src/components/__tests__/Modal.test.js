@@ -1,8 +1,8 @@
 import React from "react";
-import renderer from 'react-test-renderer'
+import renderer from "react-test-renderer";
 import Modal from "../Modal";
 
-it('renders correctly', () => {
-  const tree = renderer.create(<Modal />).toJSON()
-  expect(tree).toMatchSnapshot()
-})
+it("renders correctly", () => {
+  const tree = renderer.create(<Modal />).toJSON();
+  expect(tree).toMatchSnapshot();
+});

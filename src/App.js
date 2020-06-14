@@ -24,9 +24,9 @@ const App = () => {
   const { isShowing, toggle } = useModal();
 
   useEffect(() => {
-    axios("https://randomuser.me/api/?results=50&nat=us")
+    axios("/api/users")
       .then((response) =>
-        response.data.results.map((user) => ({
+        response.data.map((user) => ({
           id: user.id.value,
           first_name: user.name.first,
           last_name: user.name.last,

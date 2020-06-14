@@ -1,5 +1,8 @@
 import React, { useState, useMemo } from "react";
 import SearchBox from "./SearchBox";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 
 const useSortableData = (users, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
@@ -120,20 +123,20 @@ const DirectoryTable = (props) => {
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>
-                  <button
+                  <IconButton
+                    aria-label="edit"
                     onClick={() => {
                       editUser(user);
                     }}
-                    className="button"
                   >
-                    Edit
-                  </button>
-                  <button
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="delete"
                     onClick={() => deleteUser(user.id)}
-                    className="button"
                   >
-                    Delete
-                  </button>
+                    <DeleteIcon />
+                  </IconButton>
                 </td>
               </tr>
             ))
