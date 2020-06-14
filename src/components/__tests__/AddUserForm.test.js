@@ -1,8 +1,8 @@
 import React from "react";
 import renderer from 'react-test-renderer'
-import App from "./App";
+import AddUserForm from "../AddUserForm";
 
 it('renders correctly', () => {
-  const tree = renderer.create(<App />).toJSON()
+  const tree = renderer.create(<AddUserForm />).toJSON()
   expect(tree).toMatchSnapshot()
 })
