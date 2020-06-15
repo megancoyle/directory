@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
 import DirectoryTable from "./components/DirectoryTable";
 import AddUserForm from "./components/AddUserForm";
 import EditUserForm from "./components/EditUserForm";
@@ -43,6 +44,7 @@ const App = () => {
   // incrementing ids + adding placeholder image manually
   // TODO: update id and image handling when tying this to a database
   const addUser = (user) => {
+    toggle();
     user.id = users.length + 1;
     user.image = "https://randomuser.me/api/portraits/thumb/lego/1.jpg";
     setUsers([user, ...users]);
@@ -79,22 +81,32 @@ const App = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="container">
-      <h1>Employee Directory</h1>
-      <Modal
-        isShowing={isShowing}
-        hide={toggle}
-        content={
-          <EditUserForm
-            setEditing={setEditing}
-            currentUser={currentUser}
-            updateUser={updateUser}
-          />
-        }
-      />
-      <>
-        <AddUserForm addUser={addUser} />
-      </>
+    <>
+      <Header />
+      <div className="container">
+        <button className="button-add" onClick={toggle}>
+          Add User
+        </button>
+      </div>
+      {editing ? (
+        <Modal
+          isShowing={isShowing}
+          hide={toggle}
+          content={
+            <EditUserForm
+              setEditing={setEditing}
+              currentUser={currentUser}
+              updateUser={updateUser}
+            />
+          }
+        />
+      ) : (
+        <Modal
+          isShowing={isShowing}
+          hide={toggle}
+          content={<AddUserForm addUser={addUser} />}
+        />
+      )}
       <DirectoryTable
         users={currentUsers}
         editUser={editUser}
@@ -105,7 +117,7 @@ const App = () => {
         totalUsers={users.length}
         paginate={paginate}
       />
-    </div>
+    </>
   );
 };
 

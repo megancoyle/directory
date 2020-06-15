@@ -64,89 +64,91 @@ const DirectoryTable = (props) => {
 
   return (
     <>
-      <SearchBox searchHandler={searchHandler} />
-      <table>
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>
-              <button
-                type="button"
-                onClick={() => requestSort("first_name")}
-                className={getClassNamesFor("first_name")}
-              >
-                First Name
-              </button>
-            </th>
-            <th>
-              <button
-                type="button"
-                onClick={() => requestSort("last_name")}
-                className={getClassNamesFor("last_name")}
-              >
-                Last Name
-              </button>
-            </th>
-            <th>
-              <button
-                type="button"
-                onClick={() => requestSort("username")}
-                className={getClassNamesFor("username")}
-              >
-                Username
-              </button>
-            </th>
-            <th>
-              <button
-                type="button"
-                onClick={() => requestSort("email")}
-                className={getClassNamesFor("email")}
-              >
-                Email
-              </button>
-            </th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 ? (
-            updateUsers.map((user) => (
-              <tr key={user.id}>
-                <td>
-                  <img
-                    src={user.image}
-                    alt={user.first_name + " " + user.last_name}
-                  />
-                </td>
-                <td>{user.first_name}</td>
-                <td>{user.last_name}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>
-                  <IconButton
-                    aria-label="edit"
-                    onClick={() => {
-                      editUser(user);
-                    }}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => deleteUser(user.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </td>
-              </tr>
-            ))
-          ) : (
+      <div className="container">
+        <SearchBox searchHandler={searchHandler} />
+        <table>
+          <thead>
             <tr>
-              <td colSpan={3}>No Data</td>
+              <th>Image</th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("first_name")}
+                  className={getClassNamesFor("first_name")}
+                >
+                  First Name
+                </button>
+              </th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("last_name")}
+                  className={getClassNamesFor("last_name")}
+                >
+                  Last Name
+                </button>
+              </th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("username")}
+                  className={getClassNamesFor("username")}
+                >
+                  Username
+                </button>
+              </th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("email")}
+                  className={getClassNamesFor("email")}
+                >
+                  Email
+                </button>
+              </th>
+              <th></th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {updateUsers.length > 0 ? (
+              updateUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>
+                    <img
+                      src={user.image}
+                      alt={user.first_name + " " + user.last_name}
+                    />
+                  </td>
+                  <td>{user.first_name}</td>
+                  <td>{user.last_name}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => {
+                        editUser(user);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => deleteUser(user.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5}>No Users</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 };
