@@ -41,8 +41,9 @@ To run prettier on the project after making changes, use `npm run format`
 - Storing data to a database and image handling: since this isn't hooked up to a database or custom API (and is using mock data), users aren't able to upload images. Currently the application adds a default image whenever a user adds a new item.
 - Properly setup post requests that connect passing data from the frontend to backend.
 - More specific tests: the current tests check to make sure major components are rendering properly, but I would want to implement more specific tests for the application's functionality.
+- Add a loader for when the data is being fetched.
 - Instead of using modals for editing users, use inline editing.
 - Add active classes for the pagination.
-- Have a better design implemented and a different way to manage styles - perhaps with styled components.
+- Have a better design implemented and a different way to manage styles - perhaps with styled components; also add in UI-related animations for sorting and removing items.
 - Right now the header only consists of the name of the application. For an application in production, I would add navigation and routing.
 - Have a confirmation message when the user deletes an item from the table.
